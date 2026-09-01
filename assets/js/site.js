@@ -1,7 +1,65 @@
 // Lux Metal — Shared Site Interactions (Vanilla JS, no routing, no content rendering)
 // Handles: mobile menu toggle, quote modal open/close, contact/quote form
 // fake-success UX, product/news category filter, product image slider, scroll-to-top.
+// ==========================================================================
+// GOOGLE SHEET ENDPOINT (Apps Script Web App)
+// Dán URL Web App đã deploy vào đây. Xem hướng dẫn ở cuối file.
+// ==========================================================================
+const QUOTE_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzqzbYyPIvH8d9T2OtN75XaR53D0XBqBHJ-EK_ih-Hr-BCwqZAr7wNurkCNCAmhlhC8/exec';
+
+// Gom dữ liệu 1 form thành object { nhãn: giá trị }
+function serializeForm(form) {
+  const data = {};
+  form.querySelectorAll('input, textarea, select').forEach((el, i) => {
+    const type = (el.type || '').toLowerCase();
+    if (type === 'submit' || type === 'button' || type === 'hidden') return;
+    if ((type === 'checkbox' || type === 'radio') && !el.checked) return;
+    let key = el.getAttribute('name') || el.getAttribute('id') || '';
+    if (!key) {
+      const label = (el.closest('div') && el.closest('div').querySelector('label')) || null;
+      key = label ? label.textContent.replace(/\s+/g, ' ').replace(/\s*\*\s*$/, '').trim() : 'Trường ' + (i + 1);
+    }
+    data[key] = (el.value || '').trim();
+  });
+  return data;
+}
+
+// Gửi dữ liệu form về Google Sheet. Trả về true nếu đã gửi đi (no-cors nên
+// không đọc được phản hồi — coi như thành công nếu request không lỗi mạng).
+async function submitToSheet(form, formName) {
+  const payload = serializeForm(form);
+  payload['Nguồn form'] = formName;
+  payload['Trang'] = location.pathname.split('/').pop() || 'index.html';
+  payload['Thời gian'] = new Date().toLocaleString('vi-VN');
+  if (!QUOTE_SHEET_ENDPOINT || QUOTE_SHEET_ENDPOINT.indexOf('PASTE_') === 0) {
+    console.warn('[form] Chưa cấu hình QUOTE_SHEET_ENDPOINT — dữ liệu:', payload);
+    return true;
+  }
+  try {
+    await fetch(QUOTE_SHEET_ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload),
+    });
+    return true;
+  } catch (err) {
+    console.error('[form] Gửi thất bại:', err);
+    return false;
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  // ==========================================
+  // GIỚI HẠN Ô SỐ ĐIỆN THOẠI: CHỈ SỐ, TỐI ĐA 10 KÝ TỰ
+  // ==========================================
+  document.querySelectorAll('input[type="tel"]').forEach((el) => {
+    el.addEventListener('input', () => {
+      const cleaned = el.value.replace(/\D/g, '').slice(0, 10);
+      if (cleaned !== el.value) el.value = cleaned;
+    });
+  });
+
   // ==========================================
   // MOBILE NAVIGATION DRAWER TOGGLE
   // ==========================================
@@ -53,10 +111,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   if (quoteModalForm) {
-    quoteModalForm.addEventListener('submit', (e) => {
+    quoteModalForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      const btn = quoteModalForm.querySelector('button[type="submit"]');
+      if (btn) btn.disabled = true;
+      await submitToSheet(quoteModalForm, 'Modal báo giá');
       quoteModalForm.classList.add('hidden');
       if (quoteModalSuccess) quoteModalSuccess.classList.remove('hidden');
+      quoteModalForm.reset();
+      if (btn) btn.disabled = false;
     });
   }
 
@@ -74,19 +137,23 @@ document.addEventListener('DOMContentLoaded', () => {
   // ==========================================
   // INLINE / CONTACT / QUOTE FORM FAKE-SUCCESS UX
   // ==========================================
-  function wireFakeSubmit(formId, successId) {
+  function wireSheetSubmit(formId, successId, formName) {
     const form = document.getElementById(formId);
     const success = document.getElementById(successId);
-    if (form) {
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        form.classList.add('hidden');
-        if (success) success.classList.remove('hidden');
-      });
-    }
+    if (!form) return;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]');
+      if (btn) btn.disabled = true;
+      await submitToSheet(form, formName);
+      form.classList.add('hidden');
+      if (success) success.classList.remove('hidden');
+      form.reset();
+      if (btn) btn.disabled = false;
+    });
   }
-  wireFakeSubmit('inline-quote-form', 'inline-quote-success');
-  wireFakeSubmit('contact-page-form', 'contact-page-success-msg');
+  wireSheetSubmit('inline-quote-form', 'inline-quote-success', 'Form báo giá trong trang');
+  wireSheetSubmit('contact-page-form', 'contact-page-success-msg', 'Form liên hệ');
 
   // ==========================================
   // NEWS CATEGORY FILTER (tin-tuc.html) — progressive enhancement only.
