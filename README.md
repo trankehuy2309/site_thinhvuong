@@ -8,13 +8,13 @@ Website tĩnh HTML/CSS thuần (không cần build) cho Thịnh Vượng Metal -
 - `san-pham.html` — Sản phẩm (danh sách, lọc theo danh mục)
 - `san-pham/*.html` — Trang chi tiết riêng cho từng sản phẩm
 - `gioi-thieu.html` — Giới thiệu
-- `tin-tuc.html` — Tin tức (danh sách, lọc theo chủ đề)
-- `tin-tuc/*.html` — Trang chi tiết riêng cho từng bài viết
 - `lien-he.html` — Liên hệ
 
 ## Tài nguyên dùng chung
 
-- `assets/js/site.js` — menu mobile, modal báo giá, accordion FAQ, filter sản phẩm/tin tức
+- `assets/js/site.js` — menu mobile, filter sản phẩm, slider ảnh, cuộn lên đầu trang
+
+> Không dùng form báo giá. Mọi nút "Báo giá" / liên hệ đều trỏ thẳng tới Zalo `https://zalo.me/0977304316`.
 - `src/index.css` — style tuỳ chỉnh (dùng cùng Tailwind CDN đã include trong mỗi trang)
 - `src/assets/images/` — hình ảnh
 

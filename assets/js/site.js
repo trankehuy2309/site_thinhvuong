@@ -1,65 +1,8 @@
 // Lux Metal — Shared Site Interactions (Vanilla JS, no routing, no content rendering)
-// Handles: mobile menu toggle, quote modal open/close, contact/quote form
-// fake-success UX, product/news category filter, product image slider, scroll-to-top.
-// ==========================================================================
-// GOOGLE SHEET ENDPOINT (Apps Script Web App)
-// Dán URL Web App đã deploy vào đây. Xem hướng dẫn ở cuối file.
-// ==========================================================================
-const QUOTE_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzqzbYyPIvH8d9T2OtN75XaR53D0XBqBHJ-EK_ih-Hr-BCwqZAr7wNurkCNCAmhlhC8/exec';
-
-// Gom dữ liệu 1 form thành object { nhãn: giá trị }
-function serializeForm(form) {
-  const data = {};
-  form.querySelectorAll('input, textarea, select').forEach((el, i) => {
-    const type = (el.type || '').toLowerCase();
-    if (type === 'submit' || type === 'button' || type === 'hidden') return;
-    if ((type === 'checkbox' || type === 'radio') && !el.checked) return;
-    let key = el.getAttribute('name') || el.getAttribute('id') || '';
-    if (!key) {
-      const label = (el.closest('div') && el.closest('div').querySelector('label')) || null;
-      key = label ? label.textContent.replace(/\s+/g, ' ').replace(/\s*\*\s*$/, '').trim() : 'Trường ' + (i + 1);
-    }
-    data[key] = (el.value || '').trim();
-  });
-  return data;
-}
-
-// Gửi dữ liệu form về Google Sheet. Trả về true nếu đã gửi đi (no-cors nên
-// không đọc được phản hồi — coi như thành công nếu request không lỗi mạng).
-async function submitToSheet(form, formName) {
-  const payload = serializeForm(form);
-  payload['Nguồn form'] = formName;
-  payload['Trang'] = location.pathname.split('/').pop() || 'index.html';
-  payload['Thời gian'] = new Date().toLocaleString('vi-VN');
-  if (!QUOTE_SHEET_ENDPOINT || QUOTE_SHEET_ENDPOINT.indexOf('PASTE_') === 0) {
-    console.warn('[form] Chưa cấu hình QUOTE_SHEET_ENDPOINT — dữ liệu:', payload);
-    return true;
-  }
-  try {
-    await fetch(QUOTE_SHEET_ENDPOINT, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload),
-    });
-    return true;
-  } catch (err) {
-    console.error('[form] Gửi thất bại:', err);
-    return false;
-  }
-}
+// Handles: mobile menu toggle, product category filter, product image slider,
+// hero slideshow, scroll-to-top. (Không còn form báo giá — liên hệ trực tiếp qua Zalo.)
 
 document.addEventListener('DOMContentLoaded', () => {
-  // ==========================================
-  // GIỚI HẠN Ô SỐ ĐIỆN THOẠI: CHỈ SỐ, TỐI ĐA 10 KÝ TỰ
-  // ==========================================
-  document.querySelectorAll('input[type="tel"]').forEach((el) => {
-    el.addEventListener('input', () => {
-      const cleaned = el.value.replace(/\D/g, '').slice(0, 10);
-      if (cleaned !== el.value) el.value = cleaned;
-    });
-  });
-
   // ==========================================
   // MOBILE NAVIGATION DRAWER TOGGLE
   // ==========================================
@@ -71,113 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     mobileMenu.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-    });
-  }
-
-  // ==========================================
-  // INSTANT QUOTE MODAL DIALOG
-  // ==========================================
-  const quoteModal = document.getElementById('quote-modal');
-  const closeQuoteModalBtn = document.getElementById('close-quote-modal-btn');
-  const headerQuoteTriggerBtn = document.getElementById('header-quote-trigger-btn');
-  const floatingQuoteBtn = document.getElementById('floating-quote-btn');
-  const quoteModalForm = document.getElementById('quote-modal-form');
-  const quoteModalSuccess = document.getElementById('quote-modal-success');
-
-  function openQuoteModal(productName) {
-    if (!quoteModal) return;
-    quoteModal.classList.remove('hidden');
-    if (quoteModalForm) quoteModalForm.classList.remove('hidden');
-    if (quoteModalSuccess) quoteModalSuccess.classList.add('hidden');
-    if (productName) {
-      const prodInput = document.getElementById('quote-product-input');
-      if (prodInput) prodInput.value = productName;
-    }
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeQuoteModal() {
-    if (!quoteModal) return;
-    quoteModal.classList.add('hidden');
-    document.body.style.overflow = 'auto';
-  }
-
-  if (headerQuoteTriggerBtn) headerQuoteTriggerBtn.addEventListener('click', () => openQuoteModal());
-  if (floatingQuoteBtn) floatingQuoteBtn.addEventListener('click', () => openQuoteModal());
-  if (closeQuoteModalBtn) closeQuoteModalBtn.addEventListener('click', closeQuoteModal);
-  if (quoteModal) {
-    quoteModal.addEventListener('click', (e) => {
-      if (e.target === quoteModal) closeQuoteModal();
-    });
-  }
-  if (quoteModalForm) {
-    quoteModalForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = quoteModalForm.querySelector('button[type="submit"]');
-      if (btn) btn.disabled = true;
-      await submitToSheet(quoteModalForm, 'Modal báo giá');
-      quoteModalForm.classList.add('hidden');
-      if (quoteModalSuccess) quoteModalSuccess.classList.remove('hidden');
-      quoteModalForm.reset();
-      if (btn) btn.disabled = false;
-    });
-  }
-
-  // Global delegation: any button with .btn-request-quote opens the modal
-  // pre-filled with the product name from data-product-name.
-  document.addEventListener('click', (e) => {
-    const quoteBtn = e.target.closest('.btn-request-quote');
-    if (quoteBtn) {
-      e.preventDefault();
-      const pName = quoteBtn.getAttribute('data-product-name') || '';
-      openQuoteModal(pName);
-    }
-  });
-
-  // ==========================================
-  // INLINE / CONTACT / QUOTE FORM FAKE-SUCCESS UX
-  // ==========================================
-  function wireSheetSubmit(formId, successId, formName) {
-    const form = document.getElementById(formId);
-    const success = document.getElementById(successId);
-    if (!form) return;
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = form.querySelector('button[type="submit"]');
-      if (btn) btn.disabled = true;
-      await submitToSheet(form, formName);
-      form.classList.add('hidden');
-      if (success) success.classList.remove('hidden');
-      form.reset();
-      if (btn) btn.disabled = false;
-    });
-  }
-  wireSheetSubmit('inline-quote-form', 'inline-quote-success', 'Form báo giá trong trang');
-  wireSheetSubmit('contact-page-form', 'contact-page-success-msg', 'Form liên hệ');
-
-  // ==========================================
-  // NEWS CATEGORY FILTER (tin-tuc.html) — progressive enhancement only.
-  // All articles remain fully present in the HTML for SEO; this only
-  // toggles visibility client-side.
-  // ==========================================
-  const newsCatButtons = document.querySelectorAll('.news-cat-btn');
-  const newsArticles = document.querySelectorAll('.news-filterable');
-  if (newsCatButtons.length && newsArticles.length) {
-    newsCatButtons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        newsCatButtons.forEach((b) => {
-          b.classList.remove('bg-[#0f2d59]', 'text-white', 'shadow-sm');
-          b.classList.add('bg-white', 'border', 'border-slate-300', 'text-slate-700');
-        });
-        btn.classList.remove('bg-white', 'border', 'border-slate-300', 'text-slate-700');
-        btn.classList.add('bg-[#0f2d59]', 'text-white', 'shadow-sm');
-
-        const cat = btn.getAttribute('data-cat') || 'all';
-        newsArticles.forEach((art) => {
-          const artCat = art.getAttribute('data-cat');
-          art.classList.toggle('hidden', cat !== 'all' && artCat !== cat);
-        });
-      });
     });
   }
 
@@ -218,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const thumbs = slider.querySelectorAll('.product-slider-thumb');
     if (!track || slides.length === 0) return;
     let index = 0;
+    let timer = null;
 
     function goTo(i) {
       index = (i + slides.length) % slides.length;
@@ -232,12 +69,24 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    function start() {
+      stop();
+      if (slides.length > 1) timer = setInterval(() => goTo(index + 1), 4000);
+    }
+    function stop() {
+      if (timer) clearInterval(timer);
+    }
+
     const prevBtn = slider.querySelector('.product-slider-prev');
     const nextBtn = slider.querySelector('.product-slider-next');
-    if (prevBtn) prevBtn.addEventListener('click', () => goTo(index - 1));
-    if (nextBtn) nextBtn.addEventListener('click', () => goTo(index + 1));
-    dots.forEach((d) => d.addEventListener('click', () => goTo(Number(d.getAttribute('data-index')))));
-    thumbs.forEach((t) => t.addEventListener('click', () => goTo(Number(t.getAttribute('data-index')))));
+    if (prevBtn) prevBtn.addEventListener('click', () => { goTo(index - 1); start(); });
+    if (nextBtn) nextBtn.addEventListener('click', () => { goTo(index + 1); start(); });
+    dots.forEach((d) => d.addEventListener('click', () => { goTo(Number(d.getAttribute('data-index'))); start(); }));
+    thumbs.forEach((t) => t.addEventListener('click', () => { goTo(Number(t.getAttribute('data-index'))); start(); }));
+    slider.addEventListener('mouseenter', stop);
+    slider.addEventListener('mouseleave', start);
+
+    start();
   });
 
   // ==========================================

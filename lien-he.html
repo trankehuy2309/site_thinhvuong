@@ -66,10 +66,10 @@
             <span class="hidden lg:flex items-center gap-1.5 text-white font-medium"><i class="fa-solid fa-award text-blue-200"></i> Cam kết chất lượng & đúng tiến độ</span>
           </div>
           <div class="flex items-center gap-4 text-xs font-bold">
-            <button id="header-quote-trigger-btn" class="text-white hover:text-white transition-colors flex items-center gap-1.5 bg-red-600 hover:bg-red-700 px-2.5 py-0.5 rounded border border-red-500/50 font-bold">
+            <a href="https://zalo.me/0977304316" target="_blank" rel="noreferrer" class="text-white hover:text-white transition-colors flex items-center gap-1.5 bg-red-600 hover:bg-red-700 px-2.5 py-0.5 rounded border border-red-500/50 font-bold">
               <i class="fa-solid fa-calculator"></i>
               <span>Báo giá nhanh</span>
-            </button>
+            </a>
             <span class="text-blue-800">|</span>
             <a href="tel:0977304316" class="text-white hover:text-blue-200 transition-colors flex items-center gap-1"> <i class="fa-solid fa-phone text-blue-300"></i> Hotline/Zalo: 0977.304.316 </a>
           </div>
@@ -97,7 +97,6 @@
           <a href="san-pham.html" class="nav-item px-3.5 py-2 rounded-lg text-white hover:bg-blue-900/60 transition-colors">Sản phẩm</a>
           <a href="dich-vu.html" class="nav-item px-3.5 py-2 rounded-lg text-white hover:bg-blue-900/60 transition-colors">Dịch vụ</a>
           <a href="gioi-thieu.html" class="nav-item px-3.5 py-2 rounded-lg text-white hover:bg-blue-900/60 transition-colors">Giới thiệu</a>
-          <a href="tin-tuc.html" class="nav-item px-3.5 py-2 rounded-lg text-white hover:bg-blue-900/60 transition-colors">Tin tức</a>
           <a href="lien-he.html" class="nav-item px-3.5 py-2 rounded-lg bg-white text-[#0f2d59] shadow-sm font-extrabold transition-colors border-b-2 border-red-600">Liên hệ</a>
         </nav>
 
@@ -122,7 +121,6 @@
         <a href="san-pham.html" class="mobile-nav-item block py-3 px-3 rounded-lg text-white border-b border-blue-900/40">Sản phẩm</a>
         <a href="dich-vu.html" class="mobile-nav-item block py-3 px-3 rounded-lg text-white border-b border-blue-900/40">Dịch vụ</a>
         <a href="gioi-thieu.html" class="mobile-nav-item block py-3 px-3 rounded-lg text-white border-b border-blue-900/40">Giới thiệu Thịnh Vượng Metal</a>
-        <a href="tin-tuc.html" class="mobile-nav-item block py-3 px-3 rounded-lg text-white border-b border-blue-900/40">Tin tức & Kỹ thuật</a>
         <a href="lien-he.html" class="mobile-nav-item block py-3 px-3 rounded-lg bg-white text-[#0f2d59] font-extrabold">Liên hệ & Báo giá</a>
       </div>
     </header>
@@ -203,68 +201,31 @@
               <div class="border-b border-slate-100 pb-3">
                 <h2 class="text-xl font-bold text-[#0f172a] flex items-center gap-2">
                   <i class="fa-solid fa-paper-plane text-[#0f2d59]"></i>
-                  <span>Gửi yêu cầu báo giá trực tiếp</span>
+                  <span>Nhận báo giá qua Zalo</span>
                 </h2>
-                <p class="text-xs text-slate-500 mt-1">Điền thông tin bên dưới để nhận phản hồi tư vấn kỹ thuật & báo giá trong 15 phút.</p>
+                <p class="text-xs text-slate-500 mt-1">Nhắn Zalo hoặc gọi trực tiếp cho kỹ sư Thịnh Vượng Metal để được tư vấn kỹ thuật & báo giá trong 15 phút.</p>
               </div>
 
-              <form id="contact-page-form" class="space-y-4">
-
-                <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1">Họ và tên <span class="text-blue-700">*</span></label>
-                  <input
-                    name="Họ và tên"
-                    type="text"
-                    required
-                    placeholder="Nhập họ và tên của bạn..."
-                    class="w-full px-3.5 py-2.5 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-[#0f2d59]"
-                  />
-                </div>
-                <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1">Số điện thoại / Zalo <span class="text-blue-700">*</span></label>
-                  <input
-                    name="Số điện thoại / Zalo"
-                    type="tel"
-                    required
-                    inputmode="numeric"
-                    maxlength="10"
-                    pattern="0[0-9]{9}"
-                    title="Số điện thoại gồm 10 chữ số, bắt đầu bằng 0"
-                    placeholder="09xxxxxxxx"
-                    class="w-full px-3.5 py-2.5 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-[#0f2d59]"
-                  />
-                </div>
-                <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1">Sản phẩm / Hạng mục quan tâm</label>
-                  <input
-                    name="Sản phẩm / Hạng mục quan tâm"
-                    type="text"
-                    placeholder="Ví dụ: Nẹp inox trang trí, vách ngăn CNC, gia công cắt laser..."
-                    class="w-full px-3.5 py-2.5 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-[#0f2d59]"
-                  />
-                </div>
-                <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1">Chi tiết yêu cầu &amp; Kích thước (nếu có)</label>
-                  <textarea
-                    name="Chi tiết yêu cầu & Kích thước"
-                    rows="4"
-                    placeholder="Nhập quy cách, số lượng, kích thước, vật liệu..."
-                    class="w-full px-3.5 py-2.5 text-xs border border-slate-300 rounded-lg focus:outline-none focus:border-[#0f2d59]"
-                  ></textarea>
-                </div>
-
-                <button
-                  type="submit"
+              <div class="space-y-3">
+                <a
+                  href="https://zalo.me/0977304316"
+                  target="_blank"
+                  rel="noreferrer"
                   class="w-full py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs tracking-wider rounded-lg transition-colors shadow-md flex items-center justify-center gap-2"
                 >
-                  <i class="fa-solid fa-paper-plane"></i>
-                  <span>Gửi đăng ký nhận báo giá</span>
-                </button>
-              </form>
-
-              <div id="contact-page-success-msg" class="hidden p-4 bg-blue-50 border border-blue-200 text-blue-800 text-xs rounded-xl space-y-1">
-                <p class="font-bold"><i class="fa-solid fa-circle-check text-blue-700 mr-1"></i> Đã gửi yêu cầu báo giá thành công!</p>
-                <p>Chuyên viên kinh doanh Thịnh Vượng Metal sẽ gọi thoại / Zalo báo giá ngay lập tức.</p>
+                  <i class="fa-solid fa-comment-dots"></i>
+                  <span>Nhắn Zalo: 0977.304.316</span>
+                </a>
+                <a
+                  href="tel:0977304316"
+                  class="w-full py-3.5 bg-[#0f2d59] hover:bg-blue-900 text-white font-bold text-xs tracking-wider rounded-lg transition-colors shadow-md flex items-center justify-center gap-2"
+                >
+                  <i class="fa-solid fa-phone"></i>
+                  <span>Gọi ngay: 0977.304.316 - 0938.424.042</span>
+                </a>
+                <p class="text-[11px] text-center text-slate-400 pt-1">
+                  <i class="fa-solid fa-clock text-[#0f2d59] mr-1"></i> Hỗ trợ 8:00 - 18:00 (Thứ 2 - Thứ 7) • Báo giá trực tiếp tận xưởng
+                </p>
               </div>
             </div>
           </div>
@@ -308,9 +269,6 @@
                 <a href="gioi-thieu.html" class="hover:text-white transition-colors"><i class="fa-solid fa-angle-right text-[10px] mr-1"></i> Giới thiệu Thịnh Vượng Metal</a>
               </li>
               <li>
-                <a href="tin-tuc.html" class="hover:text-white transition-colors"><i class="fa-solid fa-angle-right text-[10px] mr-1"></i> Tin tức & Bài viết</a>
-              </li>
-              <li>
                 <a href="lien-he.html" class="hover:text-white transition-colors"><i class="fa-solid fa-angle-right text-[10px] mr-1"></i> Liên hệ nhà máy</a>
               </li>
             </ul>
@@ -333,107 +291,6 @@
         </div>
       </div>
     </footer>
-
-    <!-- INSTANT QUOTE MODAL DIALOG -->
-    <div id="quote-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 backdrop-blur-sm">
-      <div
-        class="bg-white text-slate-900 border border-slate-200 rounded-3xl max-w-xl w-full p-6 sm:p-8 space-y-5 shadow-2xl relative animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto"
-      >
-        <button
-          id="close-quote-modal-btn"
-          class="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-colors"
-        >
-          <i class="fa-solid fa-xmark text-sm"></i>
-        </button>
-        <div class="border-b border-slate-100 pb-4 text-center sm:text-left">
-          <div class="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-200 text-[#0f2d59] text-[10px] font-extrabold px-3 py-1 rounded-full tracking-wider mb-2">
-            <i class="fa-solid fa-bolt text-[#0f2d59]"></i>
-            <span>Báo giá trực tiếp nhà máy</span>
-          </div>
-          <h3 class="text-xl sm:text-2xl font-extrabold text-[#0f2d59] tracking-tight">Yêu cầu báo giá</h3>
-          <p class="text-xs text-slate-500 mt-1 leading-relaxed">Kỹ sư Thịnh Vượng Metal sẽ gọi điện hoặc gửi file báo giá bóc tách chi tiết qua Zalo trong <strong class="text-[#0f2d59]">15 phút</strong>.</p>
-        </div>
-
-        <form id="quote-modal-form" class="space-y-4">
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">Họ và tên <span class="text-blue-700">*</span></label>
-              <input
-                id="quote-name-input" name="Họ và tên"
-                type="text"
-                required
-                placeholder="Nhập họ và tên của bạn..."
-                class="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-[#0f2d59] focus:ring-2 focus:ring-blue-100 transition-all"
-              />
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">Số điện thoại / Zalo <span class="text-blue-700">*</span></label>
-              <input
-                id="quote-phone-input" name="Số điện thoại / Zalo"
-                type="tel"
-                required
-                inputmode="numeric"
-                maxlength="10"
-                pattern="0[0-9]{9}"
-                title="Số điện thoại gồm 10 chữ số, bắt đầu bằng 0"
-                placeholder="09xxxxxxxx"
-                class="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-[#0f2d59] focus:ring-2 focus:ring-blue-100 transition-all"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Sản phẩm / Hạng mục quan tâm</label>
-            <input
-              id="quote-product-input" name="Sản phẩm / Hạng mục quan tâm"
-              type="text"
-              placeholder="Ví dụ: Nẹp inox trang trí, vách ngăn CNC, gia công cắt laser..."
-              class="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-[#0f2d59] focus:ring-2 focus:ring-blue-100 transition-all"
-            />
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">Chi tiết yêu cầu &amp; Kích thước (nếu có)</label>
-            <textarea
-              id="quote-note-input" name="Chi tiết yêu cầu & Kích thước"
-              rows="3"
-              placeholder="Nhập quy cách, số lượng, kích thước, vật liệu..."
-              class="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:outline-none focus:border-[#0f2d59] focus:ring-2 focus:ring-blue-100 transition-all"
-            ></textarea>
-          </div>
-
-
-          <div class="pt-2 space-y-3">
-            <button
-              type="submit"
-              class="w-full py-3.5 px-6 bg-red-600 hover:bg-red-700 text-white font-extrabold text-xs tracking-wider rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.99]"
-            >
-              <i class="fa-solid fa-paper-plane"></i>
-              <span>Gửi yêu cầu báo giá ngay</span>
-            </button>
-            <p class="text-[11px] text-center text-slate-400"><i class="fa-solid fa-shield-halved text-[#0f2d59] mr-1"></i> Cam kết bảo mật thông tin • Báo giá trực tiếp tận gốc xưởng sản xuất</p>
-          </div>
-        </form>
-
-        <div id="quote-modal-success" class="hidden p-6 bg-blue-50 border border-blue-200 text-blue-900 text-xs rounded-2xl space-y-3 text-center">
-          <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center mx-auto text-xl font-bold">
-            <i class="fa-solid fa-circle-check"></i>
-          </div>
-          <div>
-            <h4 class="font-extrabold text-sm text-blue-900">Đã Gửi Yêu cầu báo giá Thành Công!</h4>
-            <p class="text-blue-700 mt-1">Kỹ sư phụ trách khu vực của Thịnh Vượng Metal sẽ liên hệ qua số điện thoại/Zalo để gửi bảng bóc tách khối lượng và bảng mẫu màu cho bạn.</p>
-          </div>
-          <button
-            type="button"
-            onclick="document.getElementById('quote-modal').classList.add('hidden')"
-            class="px-5 py-2 bg-[#0f2d59] text-white font-bold rounded-lg hover:bg-blue-900 transition-colors"
-          >
-            Đóng cửa sổ
-          </button>
-        </div>
-      </div>
-    </div>
 
     <!-- FLOATING QUICK CONTACT DOCK -->
     <div class="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-3">
